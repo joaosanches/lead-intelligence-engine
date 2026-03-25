@@ -1,0 +1,20 @@
+[project]
+name = "lead-intelligence-engine"
+version = "0.1.0"
+description = "Lead classification engine using LLMs"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "pydantic-settings",
+    "httpx",
+    "python-dotenv"
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-asyncio"
+]
