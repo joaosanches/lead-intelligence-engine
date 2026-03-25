@@ -1,5 +1,6 @@
 import json
 import httpx
+from pydantic import ValidationError
 
 from app.config import settings
 from app.providers.base import BaseLLMProvider
@@ -54,7 +55,9 @@ Lead:
             response.raise_for_status()
             data = response.json()
 
-        content = data["choices"][0]["message"]["content"]
-        parsed = json.loads(content)
-
-        return LeadAnalysis(**parsed)
+        try:
+            content = data["choices"][0]["message"]["content"]
+            parsed = json.loads(content)
+            return LeadAnalysis(**parsed)
+        except (KeyError, IndexError, TypeError, json.JSONDecodeError, ValidationError) as exc:
+            raise ValueError("Resposta inválida do provider Groq.") from exc
